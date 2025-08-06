@@ -2,9 +2,9 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
 import {
-  Send, Paperclip, Smile, Phone, Video, MoreVertical, Search, Plus,
-  UserPlus, Settings, Archive, MessageSquare, Users, Clock, CheckCheck,
-  Image, File, X, LogOut, Hash, AlertCircle, Loader2, Shield
+  Send, Paperclip, Smile, MoreVertical, Search, Plus,
+  UserPlus, Archive, MessageSquare, Users, Clock, CheckCheck,
+  X, LogOut, Hash, AlertCircle, Loader2, Shield
 } from 'lucide-react';
 
 const API_BASE = 'https://global-backfinal.onrender.com/api';
@@ -865,7 +865,7 @@ export default function ChatPage() {
                 className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
                 title="Refresh"
               >
-                <Settings className="w-4 h-4" />
+                <Search className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -993,12 +993,6 @@ export default function ChatPage() {
               </div>
 
               <div className="flex items-center space-x-2">
-                <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-                  <Phone className="w-4 h-4" />
-                </button>
-                <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-                  <Video className="w-4 h-4" />
-                </button>
                 {chatType === 'room' && currentRoom && isCurrentUserInRoom(currentRoom) && (
                   <button
                     onClick={() => leaveRoom(currentRoom._id)}
@@ -1076,13 +1070,6 @@ export default function ChatPage() {
             {/* Message Input */}
             <div className="p-4 border-t bg-white">
               <div className="flex items-end space-x-2">
-                <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-                  <Paperclip className="w-5 h-5" />
-                </button>
-                <button className="p-2 text-gray-600 hover:bg-gray-100 rounded-full transition-colors">
-                  <Image className="w-5 h-5" />
-                </button>
-
                 <div className="flex-1 relative">
                   <textarea
                     value={message}
