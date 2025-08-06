@@ -19,7 +19,7 @@ import {
 //import CustomTable from "./CustomTableDisplay.js"; // Adjust path if needed
 
 // Define the base API URL for the deployed backend
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = "https://global-backfinal.onrender.com";
 
 const TableCustomizer = () => {
   const [tableName, setTableName] = useState("");

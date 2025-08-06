@@ -17,7 +17,7 @@ import {
 import { useAuth } from '../../context/AuthContext'
 
 // API base URL for the deployed backend
-const API_BASE_URL = "http://localhost:8000"
+const API_BASE_URL = "https://global-backfinal.onrender.com"
 
 // Default table headers configuration
 const DEFAULT_HEADERS = [

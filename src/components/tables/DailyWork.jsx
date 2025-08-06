@@ -13,7 +13,7 @@ const useAuth = () => {
 }
 
 // Updated API base URL
-const API_BASE_URL = "http://localhost:8000"
+const API_BASE_URL = "https://global-backfinal.onrender.com"
 
 // Default table headers configuration for Daily Work Report
 const DEFAULT_DAILY_WORK_HEADERS = [

@@ -6,7 +6,7 @@ import {
 } from 'lucide-react'
 
 // Backend API URL
-const API_URL = "http://localhost:8000"
+const API_URL = "https://global-backfinal.onrender.com"
 
 // API Configuration - Set this to true to use separate delivery endpoints
 // Set to false to use the existing customer-delivery-notices endpoints

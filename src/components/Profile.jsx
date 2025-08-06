@@ -52,7 +52,7 @@ export default function Profile() {
   const loadUserProfile = async () => {
     try {
       setIsLoading(true)
-      const response = await fetch("http://localhost:8000/api/get-user-profile", {
+      const response = await fetch("https://global-backfinal.onrender.com/api/get-user-profile", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ export default function Profile() {
 
   const loadUserProjects = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/get-projects", {
+      const response = await fetch("https://global-backfinal.onrender.com/api/get-projects", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ export default function Profile() {
   const saveProfileInfo = async () => {
     try {
       setIsLoading(true)
-      const response = await fetch("http://localhost:8000/api/edit-user", {
+      const response = await fetch("https://global-backfinal.onrender.com/api/edit-user", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -215,7 +215,7 @@ export default function Profile() {
         formData.append("email", profileInfo.email)
         
         setIsLoading(true)
-        const response = await fetch("http://localhost:8000/api/upload-profile-image", {
+        const response = await fetch("https://global-backfinal.onrender.com/api/upload-profile-image", {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${getAuthToken()}`
@@ -283,7 +283,7 @@ export default function Profile() {
 
       if (selectedProject.id) {
         // Update existing project
-        response = await fetch("http://localhost:8000/api/update-project", {
+        response = await fetch("https://global-backfinal.onrender.com/api/update-project", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -303,7 +303,7 @@ export default function Profile() {
         })
       } else {
         // Add new project
-        response = await fetch("http://localhost:8000/api/add-project", {
+        response = await fetch("https://global-backfinal.onrender.com/api/add-project", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -362,7 +362,7 @@ export default function Profile() {
 
     try {
       setIsLoading(true)
-      const response = await fetch("http://localhost:8000/api/delete-project", {
+      const response = await fetch("https://global-backfinal.onrender.com/api/delete-project", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -410,7 +410,7 @@ export default function Profile() {
       formData.append("projectImage", file)
       formData.append("projectId", selectedProject.id)
       
-      const response = await fetch("http://localhost:8000/api/upload-project-image", {
+      const response = await fetch("https://global-backfinal.onrender.com/api/upload-project-image", {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${getAuthToken()}`

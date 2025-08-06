@@ -150,7 +150,7 @@ export default function MaterialInquiryView() {
   });
 
   const isAdmin = user?.role === 'admin';
-  const apiUrl = "http://localhost:8000/api";
+  const apiUrl = "https://global-backfinal.onrender.com/api";
 
   // Toast notification helper
   const showToast = (message, type = "success") => {

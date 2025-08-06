@@ -199,7 +199,7 @@ export default function CustomerOrderView() {
   const [formData, setFormData] = useState({});
 
   const isAdmin = user?.role === 'admin';
-  const apiUrl = "http://localhost:8000/api";
+  const apiUrl = "https://global-backfinal.onrender.com/api";
 
   // Fetch table headers configuration
   const fetchCustomerOrderHeaders = async () => {

@@ -18,7 +18,7 @@ function SignUp() {
   const [showPassword, setShowPassword] = useState(false)
   const [toastMessage, setToastMessage] = useState(null)
 
-  const API_BASE_URL = "http://localhost:8000/api"
+  const API_BASE_URL = "https://global-backfinal.onrender.com/api"
 
   // Toast function to replace Chakra UI toast
   const showToast = (title, description, type = 'info') => {

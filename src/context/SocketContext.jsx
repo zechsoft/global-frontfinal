@@ -64,7 +64,7 @@ export const SocketProvider = ({ children }) => {
       }
 
       console.log('Creating new socket connection with token');
-      const newSocket = io('http://localhost:8000', {
+      const newSocket = io('https://global-backfinal.onrender.com', {
         auth: {
           token: token
         },

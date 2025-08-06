@@ -214,7 +214,7 @@ export default function MaterialReplenishView() {
   });
 
   const isAdmin = user?.role === 'admin';
-  const apiUrl = "http://localhost:8000/api";
+  const apiUrl = "https://global-backfinal.onrender.com/api";
 
   const showToast = (message, type = 'success') => {
     setToast({ show: true, message, type });

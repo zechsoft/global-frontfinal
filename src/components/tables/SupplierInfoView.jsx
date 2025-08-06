@@ -34,7 +34,7 @@ const DEFAULT_HEADERS = [
   { id: "invitationDate", label: "Invitation Date", visible: true, altKey: "InvitationDate" },
 ];
 
-const API_BASE_URL = "http://localhost:8000";
+const API_BASE_URL = "https://global-backfinal.onrender.com";
 
 // Enhanced API utility with better error handling and authentication
 const apiRequest = async (url, options = {}, authToken = null) => {

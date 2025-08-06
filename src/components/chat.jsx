@@ -7,7 +7,7 @@ import {
   Image, File, X, LogOut, Hash, AlertCircle, Loader2, Shield
 } from 'lucide-react';
 
-const API_BASE = 'http://localhost:8000/api';
+const API_BASE = 'https://global-backfinal.onrender.com/api';
 
 export default function ChatPage() {
   const { authenticatedApiCall, user, logout } = useAuth();

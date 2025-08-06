@@ -18,7 +18,7 @@ export default function Dashboard() {
   const isAdmin = user?.role === 'admin'
 
   // Backend API URL
-  const API_URL = "http://localhost:8000/api"
+  const API_URL = "https://global-backfinal.onrender.com/api"
 
   // State management
   const [currentDate, setCurrentDate] = useState(new Date())

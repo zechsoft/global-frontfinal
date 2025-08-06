@@ -71,7 +71,7 @@ export default function ForgotPassword() {
     setIsLoading(true)
     
     try {
-      const response = await fetch('http://localhost:8000/api/forgot-password', {
+      const response = await fetch('https://global-backfinal.onrender.com/api/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ export default function ForgotPassword() {
     setIsLoading(true)
     
     try {
-      const response = await fetch('http://localhost:8000/api/reset-password', {
+      const response = await fetch('https://global-backfinal.onrender.com/api/reset-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -419,7 +419,7 @@ export default function ForgotPassword() {
         <div className="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-4">
           <div className="text-sm text-gray-600">
             <p className="font-medium mb-2">Demo Information:</p>
-            <p className="mb-1">• API Endpoint: http://localhost:8000/api</p>
+            <p className="mb-1">• API Endpoint: https://global-backfinal.onrender.com/api</p>
             <p className="mb-1">• Admin Email: zechsoft.it@gmail.com</p>
             <p>• For testing, use any valid email format</p>
           </div>

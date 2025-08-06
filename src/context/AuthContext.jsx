@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
       
       console.log('AuthProvider - Login attempt for:', email)
       
-      const response = await fetch("http://localhost:8000/api/login", {
+      const response = await fetch("https://global-backfinal.onrender.com/api/login", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -213,7 +213,7 @@ export const AuthProvider = ({ children }) => {
     try {
       console.log('AuthProvider - Logging out...')
       // Call logout API endpoint to invalidate server-side session
-      await fetch("http://localhost:8000/api/logout", { 
+      await fetch("https://global-backfinal.onrender.com/api/logout", { 
         credentials: 'include',
         method: 'POST'
       })

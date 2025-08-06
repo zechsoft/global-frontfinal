@@ -138,7 +138,7 @@ export default function DailyWorkView() {
   const [tableHeaders, setTableHeaders] = useState(DEFAULT_HEADERS);
 
   const isAdmin = user?.role === 'admin';
-  const apiUrl = "http://localhost:8000/api";
+  const apiUrl = "https://global-backfinal.onrender.com/api";
 
   // Show notification
   const showNotification = (message, type = 'info') => {
