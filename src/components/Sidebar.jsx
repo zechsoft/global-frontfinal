@@ -31,15 +31,22 @@ export default function Sidebar({ isOpen, onClose, onOpen }) {
   const isAdmin = user?.role === 'admin'
   const basePath = isAdmin ? '/admin' : '/client'
   
-  const menuItems = [
+  // Base menu items for all users
+  const baseMenuItems = [
     { path: `${basePath}/dashboard`, icon: Home, label: 'Dashboard' },
     { path: `${basePath}/profile`, icon: User, label: 'Profile' },
     { path: `${basePath}/customised-table`, icon: BarChart3, label: 'Customised Table' },
-    { path: `${basePath}/table-creation`, icon: Plus, label: 'Table Creation' },
     { path: `${basePath}/chat`, icon: MessageSquare, label: 'Chat' },
-    // Admin-only menu items
-   
   ]
+
+  // Admin-only menu items
+  const adminOnlyItems = [
+    { path: `${basePath}/table-creation`, icon: Plus, label: 'Table Creation' },
+    // Add other admin-only items here if needed
+  ]
+
+  // Combine menu items based on user role
+  const menuItems = isAdmin ? [...baseMenuItems, ...adminOnlyItems] : baseMenuItems
 
   const tableItems = [
     { path: `${basePath}/daily-work`, icon: Calendar, label: 'Daily Work' },
