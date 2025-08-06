@@ -19,7 +19,7 @@ import {
   RefreshCw
 } from 'lucide-react';
 
-// Default fallback headers - same as the management page
+// Updated default headers to include user column
 const DEFAULT_HEADERS = [
   { id: "supplierNumber", label: "Supplier Number", visible: true, altKey: "customerNumber" },
   { id: "supplier", label: "Supplier", visible: true, altKey: "Customer" },
@@ -32,6 +32,7 @@ const DEFAULT_HEADERS = [
   { id: "reAuthPerson", label: "Re-auth Person", visible: true, altKey: "ReAuthPerson" },
   { id: "contactInfo", label: "Contact Info", visible: true, altKey: "ContactInfo" },
   { id: "invitationDate", label: "Invitation Date", visible: true, altKey: "InvitationDate" },
+  { id: "user", label: "Created By", visible: true, altKey: null }, // Added user column
 ];
 
 const API_BASE_URL = "https://global-backfinal.onrender.com";
@@ -216,7 +217,7 @@ export default function SupplierInfoView() {
   const { user, getAuthToken } = useAuth();
   const [suppliers, setSuppliers] = useState([]);
   const [filteredSuppliers, setFilteredSuppliers] = useState([]);
-  const [tableHeaders, setTableHeaders] = useState(DEFAULT_HEADERS); // Dynamic headers
+  const [tableHeaders, setTableHeaders] = useState(DEFAULT_HEADERS);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingHeaders, setIsLoadingHeaders] = useState(true);
   const [error, setError] = useState(null);
@@ -301,7 +302,7 @@ export default function SupplierInfoView() {
     }
   };
 
-  // Fetch suppliers data
+  // Updated fetchSuppliers function to get all suppliers
   const fetchSuppliers = async () => {
     if (!user?.email) return;
     
@@ -309,9 +310,9 @@ export default function SupplierInfoView() {
     try {
       const authToken = getToken();
       
-      const data = await apiRequest(`${API_BASE_URL}/api/suppliers/get-data`, {
-        method: 'POST',
-        body: JSON.stringify({ email: user.email })
+      // Use get-all endpoint to fetch all suppliers instead of user-specific data
+      const data = await apiRequest(`${API_BASE_URL}/api/suppliers/get-all`, {
+        method: 'GET'
       }, authToken);
 
       if (data && Array.isArray(data.data)) {
@@ -366,7 +367,7 @@ export default function SupplierInfoView() {
           reAuthPerson: "Alice Davis",
           contactInfo: "info@xyz.com",
           invitationDate: "2025-07-22",
-          user: "admin@example.com",
+          user: "client@example.com",
           createdAt: "2025-07-22T14:30:00Z"
         }
       ];
@@ -744,6 +745,14 @@ export default function SupplierInfoView() {
                         );
                       }
                       
+                      if (header.id === "user") {
+                        return (
+                          <td key={header.id} className="px-6 py-4 whitespace-nowrap text-sm font-medium text-blue-600">
+                            {value || "-"}
+                          </td>
+                        );
+                      }
+                      
                       return (
                         <td key={header.id} className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           {value || "-"}
@@ -878,7 +887,7 @@ export default function SupplierInfoView() {
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <span className="font-medium text-gray-700">Created by:</span>
-                  <p className="text-gray-900">{selectedSupplier.user || "Unknown"}</p>
+                  <p className="text-blue-600 font-medium">{selectedSupplier.user || "Unknown"}</p>
                 </div>
                 <div>
                   <span className="font-medium text-gray-700">Created on:</span>
@@ -897,7 +906,7 @@ export default function SupplierInfoView() {
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
                     <span className="font-medium text-gray-700">Updated by:</span>
-                    <p className="text-gray-900">{selectedSupplier.updatedBy}</p>
+                    <p className="text-blue-600 font-medium">{selectedSupplier.updatedBy}</p>
                   </div>
                   <div>
                     <span className="font-medium text-gray-700">Updated on:</span>
@@ -927,6 +936,8 @@ export default function SupplierInfoView() {
                           />
                         ) : header.id === "invitationDate" && value ? (
                           new Date(value).toLocaleDateString()
+                        ) : header.id === "user" ? (
+                          <span className="text-blue-600 font-medium">{value || "-"}</span>
                         ) : (
                           value || "-"
                         )}
@@ -951,7 +962,7 @@ export default function SupplierInfoView() {
         title={showEditModal ? "Edit Supplier" : "Add New Supplier"}
       >
         <div className="space-y-4">
-          {tableHeaders.map(header => (
+          {tableHeaders.filter(header => header.id !== 'user').map(header => (
             <div key={header.id}>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 {header.label}
