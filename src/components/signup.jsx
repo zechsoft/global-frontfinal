@@ -279,18 +279,9 @@ function SignUp() {
                 </p>
               </div>
 
-              {/* Google Sign-Up Button */}
-              <button className="flex items-center justify-center w-full h-12 mb-6 border border-gray-300 rounded-xl font-medium hover:bg-gray-200 transition-colors">
-                <FcGoogle className="w-5 h-5 mr-2" />
-                Sign Up with Google
-              </button>
+           
 
-              {/* Divider */}
-              <div className="flex items-center justify-center mb-6">
-                <div className="w-full border-b border-gray-200" />
-                <span className="mx-2 text-gray-600">or</span>
-                <div className="w-full border-b border-gray-200" />
-              </div>
+           
 
               {/* Form fields */}
               <form onSubmit={(e) => { e.preventDefault(); handleSignUp(); }} className="space-y-4">

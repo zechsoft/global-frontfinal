@@ -1,3 +1,4 @@
+// Updated Navbar.jsx with improved logout handling
 import { useState, useEffect, useRef } from 'react'
 import { 
   Search, 
@@ -43,46 +44,115 @@ export default function Navbar({
       setIsLoggingOut(true)
       setShowUserMenu(false)
       
-      // Method 1: If using a parent component logout handler
-      if (onLogout) {
+      // Method 1: If using a parent component logout handler (AuthContext)
+      if (onLogout && typeof onLogout === 'function') {
+        console.log('Using parent logout handler...')
         await onLogout()
         return
       }
       
-      // Method 2: API logout call
-      const response = await fetch('/api/auth/logout', {
+      // Method 2: Direct API logout call with improved error handling
+      console.log('Making direct logout API call...')
+      
+      // Get the API base URL from environment or default
+      const apiBaseUrl = process.env.REACT_APP_API_URL || 'https://global-backfinal.onrender.com/api'
+      
+      const response = await fetch(`${apiBaseUrl}/logout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          // Include auth token if available
+          ...(localStorage.getItem('token') && {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          })
         },
-        credentials: 'include', // Include cookies if using session-based auth
+        credentials: 'include', // Include cookies for session-based auth
       })
       
+      // Handle logout regardless of API response (in case server is unreachable)
+      console.log('Logout API response status:', response.status)
+      
+      // Clear all stored authentication data
+      clearAuthData()
+      
       if (response.ok) {
-        // Clear any stored tokens
-        localStorage.removeItem('authToken')
-        localStorage.removeItem('refreshToken')
-        sessionStorage.clear()
-        
-        // Clear any auth cookies (if needed)
-        document.cookie.split(";").forEach((c) => {
-          document.cookie = c
-            .replace(/^ +/, "")
-            .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/")
-        })
-        
-        // Redirect to login page
-        window.location.href = '/login'
-        // Or if using React Router: navigate('/login')
+        console.log('Logout API call successful')
       } else {
-        console.error('Logout failed')
-        // Handle logout error - maybe show a notification
+        console.warn('Logout API call failed, but proceeding with client-side cleanup')
       }
+      
+      // Force redirect to login page
+      forceLogoutRedirect()
+      
     } catch (error) {
       console.error('Logout error:', error)
-      // Handle network error - maybe show a notification
+      
+      // Even if API call fails, clear client-side data and redirect
+      console.log('API call failed, performing client-side logout...')
+      clearAuthData()
+      forceLogoutRedirect()
     } finally {
       setIsLoggingOut(false)
+    }
+  }
+
+  // Helper function to clear all authentication data
+  const clearAuthData = () => {
+    console.log('Clearing authentication data...')
+    
+    // Clear localStorage
+    const localStorageKeys = ['authToken', 'token', 'refreshToken', 'user']
+    localStorageKeys.forEach(key => {
+      if (localStorage.getItem(key)) {
+        localStorage.removeItem(key)
+        console.log(`Cleared localStorage: ${key}`)
+      }
+    })
+    
+    // Clear sessionStorage
+    const sessionStorageKeys = Object.keys(sessionStorage)
+    sessionStorageKeys.forEach(key => {
+      sessionStorage.removeItem(key)
+    })
+    
+    console.log('Cleared sessionStorage')
+    
+    // Clear cookies (client-side approach)
+    const cookies = document.cookie.split(";")
+    cookies.forEach((cookie) => {
+      const eqPos = cookie.indexOf("=")
+      const name = eqPos > -1 ? cookie.substr(0, eqPos).trim() : cookie.trim()
+      if (name) {
+        // Clear for current domain and path
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=${window.location.hostname}`
+        // Also try with leading dot for subdomain cookies
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.${window.location.hostname}`
+      }
+    })
+    
+    console.log('Cleared cookies')
+  }
+
+  // Helper function to force logout redirect
+  const forceLogoutRedirect = () => {
+    console.log('Redirecting to login page...')
+    
+    // Try multiple redirect methods for compatibility
+    try {
+      // Method 1: Use React Router navigate if available
+      if (window.navigate) {
+        window.navigate('/login', { replace: true })
+        return
+      }
+      
+      // Method 2: Use window.location.replace (prevents back button)
+      window.location.replace('/login')
+      
+    } catch (redirectError) {
+      console.error('Redirect error:', redirectError)
+      // Fallback: use window.location.href
+      window.location.href = '/login'
     }
   }
 
@@ -214,27 +284,7 @@ export default function Navbar({
                   </div>
                 )}
                 
-                {!searchQuery && (
-                  <div className="mt-3 text-sm text-gray-500">
-                    <div className="flex items-center justify-between mb-2">
-                      <span>Quick Access</span>
-                    </div>
-                    <div className="space-y-1">
-                      {searchData.slice(0, 5).map((item, index) => (
-                        <button
-                          key={index}
-                          onClick={() => handleNavigate(item.path)}
-                          className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded-lg transition-colors flex items-center justify-between group"
-                        >
-                          <span className="text-gray-700">{item.title}</span>
-                          <span className="text-xs text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">
-                            {item.path}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
+              
               </div>
             </div>
           )}
@@ -296,19 +346,26 @@ export default function Navbar({
                 </a>
                 <hr className="my-1" />
                 <button 
-                  className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/50 transition-colors disabled:opacity-50"
+                  className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   onClick={handleLogout}
                   disabled={isLoggingOut}
                 >
-                  {isLoggingOut ? 'Logging out...' : 'Logout'}
+                  {isLoggingOut ? (
+                    <span className="flex items-center">
+                      <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Logging out...
+                    </span>
+                  ) : (
+                    'Logout'
+                  )}
                 </button>
               </div>
             </div>
           )}
         </div>
-
-        {/* Settings Button - Hidden on very small screens */}
-       
       </div>
     </header>
   )

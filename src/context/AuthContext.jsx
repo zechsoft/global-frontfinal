@@ -15,6 +15,10 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [token, setToken] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
+  const navigate = useNavigate()
+
+  // API configuration - Fixed for Vite
+  const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://global-backfinal.onrender.com/api'
 
   // Check for existing user session on mount
   useEffect(() => {
@@ -48,16 +52,36 @@ export const AuthProvider = ({ children }) => {
       } catch (error) {
         console.error('AuthProvider - Error parsing stored user data:', error)
         // Clear invalid data
-        localStorage.removeItem("user")
-        localStorage.removeItem("token")
-        sessionStorage.removeItem("user")
-        sessionStorage.removeItem("token")
+        clearStorageData()
       }
       setIsLoading(false)
     }
 
     checkExistingSession()
   }, [])
+
+  // Helper function to clear all storage data
+  const clearStorageData = () => {
+    console.log('AuthProvider - Clearing storage data...')
+    
+    // Clear localStorage
+    const localKeys = ['user', 'token', 'authToken', 'refreshToken']
+    localKeys.forEach(key => {
+      if (localStorage.getItem(key)) {
+        localStorage.removeItem(key)
+        console.log(`Cleared localStorage: ${key}`)
+      }
+    })
+    
+    // Clear sessionStorage
+    const sessionKeys = ['user', 'token', 'authToken', 'refreshToken']
+    sessionKeys.forEach(key => {
+      if (sessionStorage.getItem(key)) {
+        sessionStorage.removeItem(key)
+        console.log(`Cleared sessionStorage: ${key}`)
+      }
+    })
+  }
 
   // API login function
   const login = async (email, password, rememberMe = false) => {
@@ -66,7 +90,7 @@ export const AuthProvider = ({ children }) => {
       
       console.log('AuthProvider - Login attempt for:', email)
       
-      const response = await fetch("https://global-backfinal.onrender.com/api/login", {
+      const response = await fetch(`${API_BASE_URL}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -209,26 +233,92 @@ export const AuthProvider = ({ children }) => {
     throw new Error('Invalid email or password')
   }
 
-  const logout = async () => {
+  // Improved logout function
+  const logout = async (forceRedirect = true) => {
     try {
-      console.log('AuthProvider - Logging out...')
+      console.log('AuthProvider - Starting logout process...')
+      
+      // Get current token for API call
+      const currentToken = getAuthToken()
+      
       // Call logout API endpoint to invalidate server-side session
-      await fetch("https://global-backfinal.onrender.com/api/logout", { 
-        credentials: 'include',
-        method: 'POST'
-      })
+      try {
+        const response = await fetch(`${API_BASE_URL}/logout`, { 
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(currentToken && { 'Authorization': `Bearer ${currentToken}` })
+          },
+          credentials: 'include'
+        })
+        
+        if (response.ok) {
+          console.log('AuthProvider - Server-side logout successful')
+        } else {
+          console.warn('AuthProvider - Server-side logout failed:', response.status)
+        }
+      } catch (apiError) {
+        console.warn('AuthProvider - Logout API call failed:', apiError)
+        // Continue with client-side logout even if API fails
+      }
+      
     } catch (error) {
-      console.log('AuthProvider - Logout API call failed:', error)
+      console.warn('AuthProvider - Logout API error:', error)
+    } finally {
+      // Always perform client-side cleanup
+      performClientSideLogout(forceRedirect)
     }
+  }
+
+  // Perform client-side logout cleanup
+  const performClientSideLogout = (forceRedirect = true) => {
+    console.log('AuthProvider - Performing client-side logout...')
     
-    // Clear local state and storage
+    // Clear context state first
     setUser(null)
     setToken(null)
-    localStorage.removeItem("user")
-    localStorage.removeItem("token")
-    sessionStorage.removeItem("user")
-    sessionStorage.removeItem("token")
-    console.log('AuthProvider - Logout completed')
+    
+    // Clear all storage
+    clearStorageData()
+    
+    // Clear cookies
+    clearAuthCookies()
+    
+    console.log('AuthProvider - Client-side logout completed')
+    
+    // Redirect to login if requested
+    if (forceRedirect) {
+      console.log('AuthProvider - Redirecting to login page...')
+      try {
+        navigate('/login', { replace: true })
+      } catch (navError) {
+        console.error('AuthProvider - Navigation error:', navError)
+        // Fallback redirect
+        window.location.replace('/login')
+      }
+    }
+  }
+
+  // Helper function to clear auth cookies
+  const clearAuthCookies = () => {
+    console.log('AuthProvider - Clearing cookies...')
+    
+    const cookiesToClear = ['token', 'authToken', 'refreshToken', 'sessionId']
+    const domain = window.location.hostname
+    
+    cookiesToClear.forEach(cookieName => {
+      // Clear for current path
+      document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+      
+      // Clear for current domain
+      document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain};`
+      
+      // Clear for parent domain (with leading dot)
+      if (domain.includes('.')) {
+        const parentDomain = domain.substring(domain.indexOf('.'))
+        document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${parentDomain};`
+      }
+    })
   }
 
   // Helper function to get current auth token
@@ -263,24 +353,32 @@ export const AuthProvider = ({ children }) => {
       }
     }
     
-    const response = await fetch(url, mergedOptions)
-    
-    if (response.status === 401) {
-      console.log('AuthProvider - Authentication failed, logging out')
-      // Token expired or invalid, logout user
-      logout()
-      throw new Error('Authentication required. Please login.')
+    try {
+      const response = await fetch(url, mergedOptions)
+      
+      if (response.status === 401) {
+        console.log('AuthProvider - Authentication failed, logging out')
+        // Token expired or invalid, logout user
+        await logout(true)
+        throw new Error('Authentication required. Please login.')
+      }
+      
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('AuthProvider - API call failed:', response.status, errorText)
+        throw new Error(`API call failed: ${response.status}`)
+      }
+      
+      const result = await response.json()
+      console.log('AuthProvider - API call successful')
+      return result
+    } catch (error) {
+      if (error.message.includes('Authentication required')) {
+        throw error
+      }
+      console.error('AuthProvider - API call error:', error)
+      throw new Error(`Network error: ${error.message}`)
     }
-    
-    if (!response.ok) {
-      const errorText = await response.text()
-      console.error('AuthProvider - API call failed:', response.status, errorText)
-      throw new Error(`API call failed: ${response.status}`)
-    }
-    
-    const result = await response.json()
-    console.log('AuthProvider - API call successful')
-    return result
   }
 
   // Get all clients (admin only)
@@ -314,18 +412,31 @@ export const AuthProvider = ({ children }) => {
     return null
   }
 
+  // Check if user is authenticated
+  const isAuthenticated = () => {
+    return !!(user && user.isAuthenticated && getAuthToken())
+  }
+
+  // Force logout (for use in error boundaries or when auth fails)
+  const forceLogout = () => {
+    console.log('AuthProvider - Force logout triggered')
+    performClientSideLogout(true)
+  }
+
   const value = {
     user,
     token,
+    isLoading,
+    isAuthenticated,
     getAuthToken,
     login,
     demoLogin,
     logout,
+    forceLogout,
     getAllClients,
     canAccessClientData,
     getCurrentClientContext,
-    authenticatedApiCall,
-    isLoading
+    authenticatedApiCall
   }
 
   return (

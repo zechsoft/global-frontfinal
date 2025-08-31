@@ -157,7 +157,7 @@ export default function Login() {
       <div 
         className="w-full h-screen relative bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1538137524007-21e48fa42f3f')"
+          backgroundImage: "url('https://images.unsplash.com/photo-1581094794329-c8112a89af12')"
         }}
       >
         {/* Overlay with company logo and name */}
@@ -173,7 +173,7 @@ export default function Login() {
             className="text-xl md:text-2xl text-center max-w-4xl mb-10 animate-fade-in"
             style={{ animationDelay: '1s', animationFillMode: 'both' }}
           >
-            Building India's Future Through Innovation, Infrastructure & Excellence
+            Where Engineering Meets Precision - Because Everything is Possible
           </p>
           
           <button
@@ -209,10 +209,13 @@ export default function Login() {
               About Global India Corporation
             </h2>
             <p className="text-lg mb-4">
-              Established in 1996, Global India Corporation (GIC) has evolved into one of India's largest engineering and construction conglomerates, similar to industry leaders like L&T. With expertise spanning across infrastructure, power, defense, and technology, GIC has been instrumental in shaping India's development landscape.
+              Global India Corporation (GIC) is a leading multi-disciplinary engineering contracting and manpower supply company, established in 2016. We specialize in Electrical, Mechanical (HVAC), Civil, Demolition, and IT Networking services, delivering reliable solutions to industrial and commercial clients across various sectors.
+            </p>
+            <p className="text-lg mb-4">
+              With a strong focus on quality, safety, and timely execution, GIC has earned a reputation for supporting complex engineering requirements with efficiency and professionalism. Our approach blends Indian and Korean-style work methodologies, enabling us to meet technical challenges while maintaining high standards of compliance and performance.
             </p>
             <p className="text-lg">
-              We leverage cutting-edge technologies and world-class engineering practices to deliver exceptional value to our stakeholders. Our commitment to quality, safety, and sustainability has earned us recognition as a trusted partner for complex projects that drive national growth.
+              At GIC, we believe that "Everything is Possible" — a mindset that drives every service we offer, from high-voltage electrical systems to structured network infrastructure and plant engineering support.
             </p>
           </div>
           
@@ -221,7 +224,7 @@ export default function Login() {
               isAboutInView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-20'
             }`}
             style={{
-              backgroundImage: "url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80')"
+              backgroundImage: "url('/assets/Images/Images/Main Page Section Images/About US.png')"
             }}
           />
         </div>
@@ -238,24 +241,24 @@ export default function Login() {
               isMissionInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
-            Our Mission & Values
+            Our Mission & Core Strengths
           </h2>
           
           <div className="flex flex-col md:flex-row justify-center gap-8">
             {[
               {
-                title: "Excellence",
-                description: "We strive for excellence in everything we do, from engineering precision to project execution. Our meticulous attention to detail and commitment to quality sets new industry benchmarks.",
+                title: "Multi-Disciplinary Expertise",
+                description: "From electrical systems to mechanical works, HVAC setups to IT networking, civil infrastructure to safe demolition — we offer end-to-end contracting support across key engineering domains under one professional team.",
                 delay: "0.1s"
               },
               {
-                title: "Innovation", 
-                description: "We embrace innovation to solve complex challenges and drive efficiency. Our R&D centers constantly develop new methodologies and technologies to address India's growing infrastructure needs.",
+                title: "Skilled & Dedicated Workforce", 
+                description: "We deploy qualified engineers, supervisors, electricians, riggers, fitters, welders, and other specialized technicians — all trained to handle real-time industrial challenges with domain knowledge, discipline, and safety commitment.",
                 delay: "0.3s"
               },
               {
-                title: "Sustainability",
-                description: "We are committed to sustainable development that balances environmental responsibility with economic growth. Our green initiatives and eco-friendly designs ensure a positive impact on communities.",
+                title: "Indian-Korean Work Methodology",
+                description: "Our unique blend of Indian and Korean methods allows us to exceed expectations in performance, safety, and project management. This cultural synergy reflects in our high client satisfaction and long-standing industry relationships.",
                 delay: "0.5s"
               }
             ].map((item, index) => (
@@ -287,33 +290,33 @@ export default function Login() {
               isProjectsInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
             }`}
           >
-            Landmark Projects
+            Key Completed Projects
           </h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {[
               {
-                image: "https://images.unsplash.com/photo-1545711915-5c994c59a7a4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-                title: "Mumbai-Ahmedabad High-Speed Rail",
-                description: "India's first bullet train project, spanning 508km and connecting two major economic hubs with cutting-edge Japanese Shinkansen technology.",
+                image: "/assets/Images/Key Completed Projects/Samsung display Noida-Plant-Pict n.jpg",
+                title: "Samsung Display Center - Noida",
+                description: "Electrical and mechanical works including HT cable laying, transformer setup, and lighting systems for advanced display manufacturing infrastructure.",
                 direction: "left"
               },
               {
-                image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-                title: "Green Energy Complex, Gujarat", 
-                description: "A 5GW integrated renewable energy park combining solar, wind, and storage systems, making it one of Asia's largest clean energy installations.",
+                image: "/assets/Images/Key Completed Projects/Kia.jpg", 
+                title: "Kia Motors India - Penukonda",
+                description: "Industrial electrical works, HVAC installation, and manpower support for Korean vendor operations at the automotive manufacturing facility.",
                 direction: "right"
               },
               {
-                image: "https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-                title: "Bangalore Smart City Initiative",
-                description: "A comprehensive urban transformation project incorporating IoT, AI-driven traffic management, and sustainable urban planning solutions.",
+                image: "/assets/Images/Key Completed Projects/samsung-electronics-1 N.jpg",
+                title: "Samsung India Electronics",
+                description: "Electrical and IT networking support, manpower supply, and on-site engineering assistance across Noida & Chennai locations.",
                 direction: "left"
               },
               {
-                image: "https://images.unsplash.com/photo-1513828583688-c52646db42da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80",
-                title: "Eastern Dedicated Freight Corridor",
-                description: "A 1,840km freight-only railway system modernizing India's logistics infrastructure and connecting major industrial centers across six states.",
+                image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd",
+                title: "Korean Engineering Partners",
+                description: "Full-service contracting support for multiple Korean vendors including HAEWON, JUNGDO, SAMHO, DAEMYOUNG, and HYOJIN Engineering projects.",
                 direction: "right"
               }
             ].map((project, index) => (
@@ -390,7 +393,7 @@ export default function Login() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="mail@globalindiacorp.com"
+                    placeholder="globalindiacorps@gmail.com"
                     required
                     disabled={isLoading}
                   />
@@ -463,12 +466,12 @@ export default function Login() {
                   )}
                 </button>
 
-                <div className="text-center">
-                  <span className="text-sm text-gray-600">Don't have an account? </span>
-                  <a href="#" className="text-sm text-blue-600 hover:underline font-medium">
-                    Contact IT Support
-                  </a>
-                </div>
+              <div className="text-center">
+  <span className="text-sm text-gray-600">Don't have an account? </span>
+  <a href="/auth/signup" className="text-sm text-blue-600 hover:underline font-medium">
+    Contact IT Support
+  </a>
+</div>
 
                 {/* Demo Credentials */}
                 <div className="mt-4 p-4 bg-gray-50 rounded-lg">
@@ -486,25 +489,30 @@ export default function Login() {
             <div 
               className="hidden md:block w-1/2 relative bg-cover bg-center"
               style={{
-                backgroundImage: "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80')"
+                backgroundImage: "url('https://images.unsplash.com/photo-1504307651254-35680f356dfd')"
               }}
             >
               <div className="absolute inset-0 bg-blue-900 bg-opacity-70 flex flex-col justify-center items-center p-10 text-white text-center">
                 <h3 className="text-2xl font-bold mb-6">
-                  Building Tomorrow's India Today
+                  Multi-Disciplinary Engineering Excellence
                 </h3>
                 <p className="text-base mb-8">
-                  Global India Corporation is at the forefront of India's infrastructure revolution, delivering world-class engineering solutions across energy, transportation, defense, and smart cities.
+                  Global India Corporation specializes in Electrical, Mechanical (HVAC), Civil, Demolition, and IT Networking services. We blend Indian and Korean work methodologies to deliver exceptional engineering solutions since 2016.
                 </p>
                 <div>
-                  <p className="font-bold text-lg mb-4">Employee Portal Benefits:</p>
+                  <p className="font-bold text-lg mb-4">Employee Portal Access:</p>
                   <div className="space-y-2 text-left">
-                    <p>✓ Access project dashboards</p>
-                    <p>✓ Review work assignments</p>
-                    <p>✓ Submit time sheets and reports</p>
-                    <p>✓ Collaborate with team members</p>
-                    <p>✓ Access HR services and benefits</p>
+                    <p>✓ Project management dashboards</p>
+                    <p>✓ Work assignments & schedules</p>
+                    <p>✓ Safety protocols & compliance</p>
+                    <p>✓ Team collaboration tools</p>
+                    <p>✓ HR services & support</p>
                   </div>
+                </div>
+                <div className="mt-8 text-sm">
+                  <p className="font-semibold">Contact Info:</p>
+                  <p>📧 globalindiacorps@gmail.com</p>
+                  <p>📞 +91-9047642156, +91-9942471687</p>
                 </div>
               </div>
             </div>
