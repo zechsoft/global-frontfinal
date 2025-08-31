@@ -479,7 +479,7 @@ export default function Login() {
                   <div className="text-xs text-gray-600 space-y-1">
                     <p><strong>Admin:</strong> admin@example.com / password</p>
                     <p><strong>Client:</strong> client1@example.com / password</p>
-                    <p>API Endpoint: https://global-backfinal.onrender.com/api/login</p>
+                 
                   </div>
                 </div>
               </form>
